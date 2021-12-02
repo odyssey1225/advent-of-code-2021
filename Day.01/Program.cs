@@ -3,14 +3,18 @@
 using Day01;
 
 var sampleDepths = new int[] { 199, 200, 208, 210, 200, 207, 240, 269, 260, 263 };
+var sampleNavigationCommands = new string[] { "forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2" };
 
-var sampleDepthReader = new DepthReader(sampleDepths);
-var myDepthReader = new DepthReader(SubmarineData.DepthMeasurements);
+var submarine = new Submarine();
 
-Console.WriteLine($"Total number of sample depth measurements: {sampleDepthReader.TotalDepthSamples}.");
-Console.WriteLine($"Total number of sample depth increases: {sampleDepthReader.DepthIncreases}.");
-Console.WriteLine($"Total number of sample depth group increases: {sampleDepthReader.GroupedDepthIncreases}.");
+Console.WriteLine("\n --- Sample Navigation --- \n");
+submarine.Navigate(sampleNavigationCommands);
 
-Console.WriteLine($"Total number of my depth measurements: {myDepthReader.TotalDepthSamples}.");
-Console.WriteLine($"Total number of my depth increases: {myDepthReader.DepthIncreases}.");
-Console.WriteLine($"Total number of my depth group increases: {myDepthReader.GroupedDepthIncreases}.");
+Console.WriteLine("\n --- My Navigation --- \n");
+submarine.Navigate(SubmarineData.NavigationCommands);
+
+Console.WriteLine("\n --- Sample Depth Measurements --- \n");
+submarine.MeasureDepth(sampleDepths);
+
+Console.WriteLine("\n --- My Depth Measurements --- \n");
+submarine.MeasureDepth(SubmarineData.DepthMeasurements);
