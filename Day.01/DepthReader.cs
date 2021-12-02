@@ -4,18 +4,14 @@ namespace Day01
     public class DepthReader
     {
         private readonly ICollection<int> _depthSamples;
-
-        private int _totalDepthSamples;
-        public int TotalDepthSamples { get => _totalDepthSamples; }
-
-        private int _depthIncreases;
-        public int DepthIncreases { get => _depthIncreases; }
+        public readonly int TotalDepthSamples;
+        public readonly int DepthIncreases;
 
         public DepthReader(ICollection<int> depthSamples)
         {
             _depthSamples = depthSamples;
-            _totalDepthSamples = depthSamples.Count;
-            _depthIncreases = GetDepthIncreases();
+            TotalDepthSamples = depthSamples.Count;
+            DepthIncreases = GetDepthIncreases();
         }
 
         private int GetDepthIncreases()
