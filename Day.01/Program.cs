@@ -20,8 +20,12 @@ submarine.MeasureDepth(sampleDepths);
 Console.WriteLine("\n --- My Depth Measurements --- \n");
 submarine.MeasureDepth(SubmarineData.DepthMeasurements);
 
-Console.WriteLine("\n --- Sample Power Consumption --- \n");
-Console.WriteLine(Diagnostics.GetPowerConsumption(sampleDiagnosticData));
+Console.WriteLine("\n --- Sample Diagnostics --- \n");
+var sampleDiagnostics = new Diagnostics(sampleDiagnosticData);
+Console.WriteLine($"  Power Consumption: {sampleDiagnostics.GetPowerConsumption()}");
+Console.WriteLine($"Life Support Rating: {sampleDiagnostics.GetLifeSupportRating()}");
 
-Console.WriteLine("\n --- My Power Consumption --- \n");
-Console.WriteLine(Diagnostics.GetPowerConsumption(SubmarineData.DiagnosticsData));
+Console.WriteLine("\n --- My Diagnositcs --- \n");
+var myDiagnostics = new Diagnostics(SubmarineData.DiagnosticsData);
+Console.WriteLine($"  Power Consumption: {myDiagnostics.GetPowerConsumption()}");
+Console.WriteLine($"Life Support Rating: {myDiagnostics.GetLifeSupportRating()}");
