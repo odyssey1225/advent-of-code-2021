@@ -2,47 +2,43 @@
 {
     internal class Bingo
     {
-        private readonly List<int> _bingoNumbers;
-        private readonly List<BingoCard> _bingoCards = new List<BingoCard>();
-
-        public Bingo(List<int> bingoCards, List<int> bingoNumbers)
-        {
-            _bingoNumbers = bingoNumbers;
-            _bingoCards = BuildBoards(bingoCards);
-        }
-
-        public int GetEarliestBingo()
+        public int GetFirstBingo(List<int> bingoCardData, List<int> bingoNumbers)
         {
             var count = 0;
             var nextBingoNumber = 0;
-            BingoCard? winningCard = null;
+            var bingoCards = BuildCards(bingoCardData);
 
-            while (winningCard is null)
+            while (!bingoCards.Any(a => a.IsWinningCard()))
             {
-                nextBingoNumber = _bingoNumbers[count];
-                ApplyMove(nextBingoNumber);
-                winningCard = _bingoCards.FirstOrDefault(f => f.IsWinningCard());
+                nextBingoNumber = bingoNumbers[count];
+                ApplyMove(nextBingoNumber, bingoCards);
                 ++count;
             }
 
-            return GetSumForBingoCard(winningCard, nextBingoNumber);
+            return GetSumForBingoCard(bingoCards.First(f => f.IsWinningCard()), nextBingoNumber);
         }
 
-        public int GetLastBingo()
+        public int GetLastBingo(List<int> bingoCardData, List<int> bingoNumbers)
         {
             var count = 0;
             var nextBingoNumber = 0;
-            var bingoCardsCopy = new List<BingoCard>(_bingoCards);
+            var bingoCards = BuildCards(bingoCardData);
 
-            while(bingoCardsCopy.Count > 1)
+            while (bingoCards.Count > 1 || !bingoCards.First().IsWinningCard())
             {
-                nextBingoNumber = _bingoNumbers[count];
-                ApplyMove(nextBingoNumber);
-                bingoCardsCopy.RemoveAll(a => a.IsWinningCard());
+                nextBingoNumber = bingoNumbers[count];
+
+                ApplyMove(nextBingoNumber, bingoCards);
+
+                if (bingoCards.Count > 1)
+                {
+                    bingoCards.RemoveAll(a => a.IsWinningCard());
+                }
+
                 count++;
             }
 
-            return GetSumForBingoCard(bingoCardsCopy.First(), nextBingoNumber);
+            return GetSumForBingoCard(bingoCards.First(), nextBingoNumber);
         }
 
         private int GetSumForBingoCard(BingoCard card, int lastCalledValue)
@@ -50,7 +46,7 @@
             return card.Numbers.Where(w => !w.IsChecked).Select(s => s.Value).Sum() * lastCalledValue;
         }
 
-        private List<BingoCard> BuildBoards(List<int> cardData)
+        private List<BingoCard> BuildCards(List<int> cardData)
         {
             var bingoCards = new List<BingoCard>();
             for(int i = 0; i < cardData.Count; i += 25)
@@ -61,9 +57,9 @@
             return bingoCards;
         }
 
-        private void ApplyMove(int value)
+        private void ApplyMove(int value, List<BingoCard> cards)
         {
-            foreach(var card in _bingoCards)
+            foreach(var card in cards)
             {
                 var match = card.Numbers.FirstOrDefault(a => a.Value == value);
                 if (match != null)

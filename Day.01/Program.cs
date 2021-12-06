@@ -138,12 +138,12 @@ var myDiagnostics = new Diagnostics(SubmarineData.DiagnosticsData);
 Console.WriteLine($"  Power Consumption: {myDiagnostics.GetPowerConsumption()}");
 Console.WriteLine($"Life Support Rating: {myDiagnostics.GetLifeSupportRating()}");
 
+var bingoPlayer = new Bingo();
+
 Console.WriteLine("\n --- Sample Bingo Game --- \n");
-var sampleBingo = new Bingo(sampleBingoCards, SampleBingoNumbers);
-Console.WriteLine($"First Bingo: {sampleBingo.GetEarliestBingo()}");
-Console.WriteLine($"Last Bingo: {sampleBingo.GetLastBingo()}");
+Console.WriteLine($"First Bingo: {bingoPlayer.GetFirstBingo(sampleBingoCards, SampleBingoNumbers)}");
+Console.WriteLine($"Last Bingo: {bingoPlayer.GetLastBingo(sampleBingoCards, SampleBingoNumbers)}");
 
 Console.WriteLine("\n --- My Bingo Game --- \n");
-var myBingo = new Bingo(SubmarineData.BingoCards, SubmarineData.BingoNumbers);
-Console.WriteLine($"First Bingo: {myBingo.GetEarliestBingo()}");
-Console.WriteLine($"Last Bingo: {myBingo.GetLastBingo()}");
+Console.WriteLine($"First Bingo: {bingoPlayer.GetFirstBingo(SubmarineData.BingoCards, SubmarineData.BingoNumbers)}");
+Console.WriteLine($"Last Bingo: {bingoPlayer.GetLastBingo(SubmarineData.BingoCards, SubmarineData.BingoNumbers)}");
