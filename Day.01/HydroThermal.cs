@@ -10,18 +10,7 @@ namespace Day01
 
             foreach (var line in points)
             {
-                switch (HyrdroThermalExtensions.LineType(line))
-                {
-                    case LineType.Horizontal:
-                        grid.PlotHorizontalLine(line);
-                        break;
-                    case LineType.Vertical:
-                        grid.PlotVerticalLine(line);
-                        break;
-                    case LineType.Diagonal:
-                        grid.PlotDiagonalLine(line);
-                        break;
-                }
+                grid.PlotLine(line);
             }
 
             return grid.DangerousPoints();
@@ -61,79 +50,52 @@ namespace Day01
             return dangerousPoints;
         }
 
-        internal static LineType LineType(Tuple<Point,Point> line)
+        internal static void PlotLine(this int[,] grid, Tuple<Point, Point> line)
         {
-            return IsHorizontalLine(line)
-                ? Day01.LineType.Horizontal
-                : IsVerticalLine(line)
-                    ? Day01.LineType.Vertical 
-                    : Day01.LineType.Diagonal;
-        }
+            var xDiff = GetPointDifference(line.Item1.X, line.Item2.X);
+            var yDiff = GetPointDifference(line.Item1.Y, line.Item2.Y);
+            var numPoints = xDiff == PointDifference.Equal
+                ? NumberOfPoints(line.Item1.Y, line.Item2.Y)
+                : NumberOfPoints(line.Item1.X, line.Item2.X);
 
-        internal static void PlotHorizontalLine(this int[,] grid, Tuple<Point, Point> line)
-        {
-            var startingPoint = GetStartingPoint(line.Item1.X, line.Item2.X);
-
-            for (int i = 0; i <= NumberOfPoints(line.Item1.X, line.Item2.X); i++)
+            for (int i = 0; i <= numPoints; i++)
             {
-                grid[startingPoint + i, line.Item1.Y]++;
+                grid[NextPoint(line.Item1.X, i, xDiff), NextPoint(line.Item1.Y, i, yDiff)]++;
             }
         }
 
-        internal static void PlotVerticalLine(this int[,] grid, Tuple<Point, Point> line)
+        private static int NextPoint(int current, int index, PointDifference difference)
         {
-            var startingPoint = GetStartingPoint(line.Item1.Y, line.Item2.Y);
-
-            for (int i = 0; i <= NumberOfPoints(line.Item1.Y, line.Item2.Y); i++)
+            return difference switch
             {
-                grid[line.Item1.X, startingPoint + i]++;
-            }
+                PointDifference.Equal => current,
+                PointDifference.LessThan => current + index,
+                PointDifference.GreaterThan => current - index,
+                _ => throw new ArgumentOutOfRangeException(nameof(difference))
+            };
         }
 
-        internal static void PlotDiagonalLine(this int[,] grid, Tuple<Point, Point> line)
+        private static PointDifference GetPointDifference(int point1, int point2)
         {
-            var horizontalIsIncreasing = line.Item1.X < line.Item2.X;
-            var verticalIsIncreasing = line.Item1.Y < line.Item2.Y;
-
-            for (int i = 0; i <= NumberOfPoints(line.Item1.X, line.Item2.X); i++)
+            return true switch
             {
-                var x = horizontalIsIncreasing
-                    ? line.Item1.X + i
-                    : line.Item1.X - i;
-
-                var y = verticalIsIncreasing
-                    ? line.Item1.Y + i
-                    : line.Item1.Y - i;
-
-                grid[x, y]++;
-            }
+                bool _ when point1 == point2 => PointDifference.Equal,
+                bool _ when point1 > point2 => PointDifference.GreaterThan,
+                bool _ when point1 < point2 => PointDifference.LessThan,
+                _ => throw new Exception()
+            };
         }
 
         private static int NumberOfPoints(int start, int end)
         {
-            return start > end ? start - end : end - start;
-        }
-
-        private static int GetStartingPoint(int start, int end)
-        {
-            return start < end ? start : end;
-        }
-
-        private static bool IsHorizontalLine(Tuple<Point, Point> line)
-        {
-            return line.Item1.Y == line.Item2.Y;
-        }
-
-        private static bool IsVerticalLine(Tuple<Point, Point> line)
-        {
-            return line.Item1.X == line.Item2.X;
+            return Math.Abs(start - end);
         }
     }
 
-    public enum LineType
+    public enum PointDifference
     {
-        Horizontal = 0,
-        Vertical,
-        Diagonal
+        Equal = 0,
+        GreaterThan,
+        LessThan
     }
 }
