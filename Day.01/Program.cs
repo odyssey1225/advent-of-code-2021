@@ -22,7 +22,7 @@ Console.WriteLine($"  Power Consumption: {sampleDiagnostics.GetPowerConsumption(
 Console.WriteLine($"Life Support Rating: {sampleDiagnostics.GetLifeSupportRating()}");
 
 Console.WriteLine("\n --- My Diagnositcs --- \n");
-var myDiagnostics = new Diagnostics(SubmarineData.DiagnosticsData);
+var myDiagnostics = new Diagnostics(SubmarineData.DiagnosticsData); 
 Console.WriteLine($"  Power Consumption: {myDiagnostics.GetPowerConsumption()}");
 Console.WriteLine($"Life Support Rating: {myDiagnostics.GetLifeSupportRating()}");
 
@@ -41,3 +41,11 @@ Console.WriteLine($"Dangerous Points: {HydroThermal.GetDangerousPoints(SampleDat
 
 Console.WriteLine("\n --- My Hyrdro Thermal --- \n");
 Console.WriteLine($"Dangerous Points: {HydroThermal.GetDangerousPoints(SubmarineData.HydroThermalVents)}");
+
+Console.WriteLine("\n --- Sample Lantern Fish --- \n");
+Console.WriteLine($"Lantern Fish after 80 days: {FishSimulator.SimulateLanternFish(SampleData.LanternFish, 80)}");
+Console.WriteLine($"Lantern Fish after 256 days: {FishSimulator.SimulateLanternFish(SampleData.LanternFish, 256)}");
+
+Console.WriteLine("\n --- My Lantern Fish --- \n");
+Console.WriteLine($"Lantern Fish after 80 days: {FishSimulator.SimulateLanternFish(SubmarineData.LanternFish, 80)}");
+Console.WriteLine($"Lantern Fish after 256 days: {FishSimulator.SimulateLanternFish(SubmarineData.LanternFish, 256)}");
