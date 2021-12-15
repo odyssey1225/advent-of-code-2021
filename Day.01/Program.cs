@@ -49,3 +49,11 @@ Console.WriteLine($"Lantern Fish after 256 days: {FishSimulator.SimulateLanternF
 Console.WriteLine("\n --- My Lantern Fish --- \n");
 Console.WriteLine($"Lantern Fish after 80 days: {FishSimulator.SimulateLanternFish(SubmarineData.LanternFish, 80)}");
 Console.WriteLine($"Lantern Fish after 256 days: {FishSimulator.SimulateLanternFish(SubmarineData.LanternFish, 256)}");
+
+Console.WriteLine("\n --- Sample Crab Submarines --- \n");
+Console.WriteLine($"Cheapest fuel cost: {Crabs.FindCheapestPosition(SampleData.CrabPositions)}");
+Console.WriteLine($"Cheapest crab math fuel cost: {Crabs.FindCheapestPositionWithCrabMath(SampleData.CrabPositions)}");
+
+Console.WriteLine("\n --- My Crab Submarines --- \n");
+Console.WriteLine($"Cheapest fuel cost: {Crabs.FindCheapestPosition(SubmarineData.CrabPositions)}");
+Console.WriteLine($"Cheapest crab math fuel cost: {Crabs.FindCheapestPositionWithCrabMath(SubmarineData.CrabPositions)}");
