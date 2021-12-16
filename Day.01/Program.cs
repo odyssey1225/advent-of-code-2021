@@ -57,3 +57,6 @@ Console.WriteLine($"Cheapest crab math fuel cost: {Crabs.FindCheapestPositionWit
 Console.WriteLine("\n --- My Crab Submarines --- \n");
 Console.WriteLine($"Cheapest fuel cost: {Crabs.FindCheapestPosition(SubmarineData.CrabPositions)}");
 Console.WriteLine($"Cheapest crab math fuel cost: {Crabs.FindCheapestPositionWithCrabMath(SubmarineData.CrabPositions)}");
+
+Console.WriteLine("\n --- Sample Display Data --- \n");
+Console.WriteLine($"Digits displayed: {DisplayReader.ReadDisplayData(SampleData.DisplayData)}");
