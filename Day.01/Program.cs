@@ -21,7 +21,7 @@ var sampleDiagnostics = new Diagnostics(SampleData.DiagnosticsData);
 Console.WriteLine($"  Power Consumption: {sampleDiagnostics.GetPowerConsumption()}");
 Console.WriteLine($"Life Support Rating: {sampleDiagnostics.GetLifeSupportRating()}");
 
-Console.WriteLine("\n --- My Diagnositcs --- \n");
+Console.WriteLine("\n --- My Diagnostics --- \n");
 var myDiagnostics = new Diagnostics(SubmarineData.DiagnosticsData); 
 Console.WriteLine($"  Power Consumption: {myDiagnostics.GetPowerConsumption()}");
 Console.WriteLine($"Life Support Rating: {myDiagnostics.GetLifeSupportRating()}");
@@ -36,10 +36,10 @@ Console.WriteLine("\n --- My Bingo Game --- \n");
 Console.WriteLine($"First Bingo: {bingoPlayer.GetFirstBingo(SubmarineData.BingoCards, SubmarineData.BingoNumbers)}");
 Console.WriteLine($"Last Bingo: {bingoPlayer.GetLastBingo(SubmarineData.BingoCards, SubmarineData.BingoNumbers)}");
 
-Console.WriteLine("\n --- Sample Hyrdro Thermal --- \n");
+Console.WriteLine("\n --- Sample Hydro Thermal --- \n");
 Console.WriteLine($"Dangerous Points: {HydroThermal.GetDangerousPoints(SampleData.HydroThermalVents)}");
 
-Console.WriteLine("\n --- My Hyrdro Thermal --- \n");
+Console.WriteLine("\n --- My Hydro Thermal --- \n");
 Console.WriteLine($"Dangerous Points: {HydroThermal.GetDangerousPoints(SubmarineData.HydroThermalVents)}");
 
 Console.WriteLine("\n --- Sample Lantern Fish --- \n");
@@ -59,4 +59,9 @@ Console.WriteLine($"Cheapest fuel cost: {Crabs.FindCheapestPosition(SubmarineDat
 Console.WriteLine($"Cheapest crab math fuel cost: {Crabs.FindCheapestPositionWithCrabMath(SubmarineData.CrabPositions)}");
 
 Console.WriteLine("\n --- Sample Display Data --- \n");
-Console.WriteLine($"Digits displayed: {DisplayReader.ReadDisplayData(SampleData.DisplayData)}");
+Console.WriteLine($"Digit count: {DisplayReader.CountDisplayDigits(SampleData.DisplayData)}");
+Console.WriteLine($"Sum of Displayed Digits: {DisplayReader.ReadDisplay(SampleData.DisplayData)}");
+
+Console.WriteLine("\n --- My Display Data --- \n");
+Console.WriteLine($"Digits displayed: {DisplayReader.CountDisplayDigits(SubmarineData.DisplayData)}");
+Console.WriteLine($"Sum of Displayed Digits: {DisplayReader.ReadDisplay(SubmarineData.DisplayData)}");
