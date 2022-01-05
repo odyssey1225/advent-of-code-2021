@@ -21,11 +21,6 @@
 
         public static int ReadDisplay(IEnumerable<string> displayData)
         {
-            var displayDatalbl = displayData
-                .Select(s => new DisplayData(s))
-                .Select(s => s.DisplayedDigit());
-                
-            
             return displayData
                 .Select(s => new DisplayData(s))
                 .Sum(s => s.DisplayedDigit());
@@ -67,47 +62,65 @@
             _signalMap = MapSignal();
         }
 
+        /**
+         * Display characters mapped by index:
+         *      666
+         *    5     0
+         *    5     0
+         *    5     0
+         *      444
+         *    3     1
+         *    3     1
+         *    3     1
+         *      222
+         */
         private char[] MapSignal()
         {
             var map = new char[7];
 
-            var oneSignal = GetSignalForDigit(DisplayDigit.One, map);
+            var oneSignal = GetSignalForDigit(DisplayDigit.One);
+            var sevenSignal = GetSignalForDigit(DisplayDigit.Seven);
             
             map[0] = oneSignal[0];
             map[1] = oneSignal[1];
+            map[6] = sevenSignal.First(f => !map.Contains(f));
             
-            var fourSignal = GetSignalForDigit(DisplayDigit.Four, map);
-            
-            map[4] = fourSignal[0];
-            map[5] = fourSignal[1];
-            
-            var sevenSignal = GetSignalForDigit(DisplayDigit.Seven, map);
-            
-            map[6] = sevenSignal[0];
+            var fourSignal = GetSignalForDigit(DisplayDigit.Four);
+            var eightSignal = GetSignalForDigit(DisplayDigit.Eight);
+            var threeSignal = _signalPatterns.First(f => f.Length == 5
+                            && f.Contains(map[0])
+                            && f.Contains(map[1])
+                            && f.Contains(map[6]));
 
-            var eightSignal = GetSignalForDigit(DisplayDigit.Eight, map);
-            
-            map[2] = eightSignal[0];
-            map[3] = eightSignal[1];
+            map[4] = threeSignal.First(f => fourSignal.Contains(f) && !map.Contains(f));
+            map[2] = threeSignal.First(f => !map.Contains(f));
+            map[5] = fourSignal.First(f => !map.Contains(f));
+            map[3] = eightSignal.First(f => !map.Contains(f));
+
+            var fiveSignal = _signalPatterns.First(f => f.Length == 5 
+                                                        && f.Contains(map[6])
+                                                        && f.Contains(map[5])
+                                                        && f.Contains(map[4])
+                                                        && f.Contains(map[2]));
+
+            // Verify the one signal characters are in the correct order, if not swap the signals.
+            if (!fiveSignal.Contains(map[1]))
+            {
+                (map[0], map[1]) = (map[1], map[0]);
+            }
             
             return map;
         }
 
-        private char[] GetSignalForDigit(DisplayDigit digit, IEnumerable<char> signalMap)
+        private char[] GetSignalForDigit(DisplayDigit digit)
         {
-            return _signalPatterns
-                .First(f => DisplayReader.GetDisplayDigit(f) == digit)
-                .Where(w => !signalMap.Contains(w))
-                .ToArray();
+            return _signalPatterns.First(f => DisplayReader.GetDisplayDigit(f) == digit).ToArray();
         }
 
         public int DisplayedDigit()
         {
             var displayDigits = _displayPatterns.Select(SignalToDigit).ToArray();
-            var bloop = displayDigits[0] * 1000
-                        + displayDigits[1] * 100
-                        + displayDigits[2] * 10
-                        + displayDigits[3];
+            
             return displayDigits[0] * 1000 
                    + displayDigits[1] * 100 
                    + displayDigits[2] * 10 
@@ -125,8 +138,7 @@
                 _ => ParseDigit(signal)
             };
         }
-
-        // 0, 2, 3, 5, 6, 9
+        
         private int ParseDigit(string digit)
         {
             switch (digit.Length)
