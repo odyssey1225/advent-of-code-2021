@@ -65,3 +65,9 @@ Console.WriteLine($"Sum of Displayed Digits: {DisplayReader.ReadDisplay(SampleDa
 Console.WriteLine("\n --- My Display Data --- \n");
 Console.WriteLine($"Digits displayed: {DisplayReader.CountDisplayDigits(SubmarineData.DisplayData)}");
 Console.WriteLine($"Sum of Displayed Digits: {DisplayReader.ReadDisplay(SubmarineData.DisplayData)}");
+
+Console.WriteLine("\n --- Sample Lava Tubes Data --- \n");
+Console.WriteLine($"Lava Tubes Risky Points Sum: {LavaTubes.GetLowPointRiskLevels(SampleData.LowPoints)}");
+
+Console.WriteLine("\n --- My Lava Tubes Data --- \n");
+Console.WriteLine($"Lava Tubes Risky Points Sum: {LavaTubes.GetLowPointRiskLevels(SubmarineData.LowPoints)}");
