@@ -68,6 +68,8 @@ Console.WriteLine($"Sum of Displayed Digits: {DisplayReader.ReadDisplay(Submarin
 
 Console.WriteLine("\n --- Sample Lava Tubes Data --- \n");
 Console.WriteLine($"Lava Tubes Risky Points Sum: {LavaTubes.GetLowPointRiskLevels(SampleData.LowPoints)}");
+Console.WriteLine($"Lava Tube Largest Basins: {LavaTubes.GetLargestBasins(SampleData.LowPoints)}");
 
 Console.WriteLine("\n --- My Lava Tubes Data --- \n");
 Console.WriteLine($"Lava Tubes Risky Points Sum: {LavaTubes.GetLowPointRiskLevels(SubmarineData.LowPoints)}");
+Console.WriteLine($"Lava Tube Largest Basins: {LavaTubes.GetLargestBasins(SubmarineData.LowPoints)}");
