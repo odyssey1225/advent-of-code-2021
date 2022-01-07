@@ -73,3 +73,9 @@ Console.WriteLine($"Lava Tube Largest Basins: {LavaTubes.GetLargestBasins(Sample
 Console.WriteLine("\n --- My Lava Tubes Data --- \n");
 Console.WriteLine($"Lava Tubes Risky Points Sum: {LavaTubes.GetLowPointRiskLevels(SubmarineData.LowPoints)}");
 Console.WriteLine($"Lava Tube Largest Basins: {LavaTubes.GetLargestBasins(SubmarineData.LowPoints)}");
+
+Console.WriteLine("\n --- Sample Day 10 --- \n");
+Console.WriteLine($"Illegal Character Score: {Day10.GetCorruptionPoints(SampleData.Day10Input)}");
+
+Console.WriteLine("\n --- My Day 10 --- \n");
+Console.WriteLine($"Illegal Character Score: {Day10.GetCorruptionPoints(SubmarineData.Day10Input)}");
