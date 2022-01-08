@@ -1,5 +1,4 @@
 ﻿// See https://aka.ms/new-console-template for more information
-
 using Day01;
 
 var submarine = new Submarine();
@@ -75,7 +74,9 @@ Console.WriteLine($"Lava Tubes Risky Points Sum: {LavaTubes.GetLowPointRiskLevel
 Console.WriteLine($"Lava Tube Largest Basins: {LavaTubes.GetLargestBasins(SubmarineData.LowPoints)}");
 
 Console.WriteLine("\n --- Sample Day 10 --- \n");
-Console.WriteLine($"Illegal Character Score: {Day10.GetCorruptionPoints(SampleData.Day10Input)}");
+Console.WriteLine($"Illegal Character Score: {Day10.GetCorruptLineScore(SampleData.Day10Input)}");
+Console.WriteLine($"Incomplete Line Score: {Day10.GetIncompleteLineScore(SampleData.Day10Input)}");
 
 Console.WriteLine("\n --- My Day 10 --- \n");
-Console.WriteLine($"Illegal Character Score: {Day10.GetCorruptionPoints(SubmarineData.Day10Input)}");
+Console.WriteLine($"Illegal Character Score: {Day10.GetCorruptLineScore(SubmarineData.Day10Input)}");
+Console.WriteLine($"Incomplete Line Score: {Day10.GetIncompleteLineScore(SubmarineData.Day10Input)}");
