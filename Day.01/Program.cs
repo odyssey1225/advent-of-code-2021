@@ -80,3 +80,11 @@ Console.WriteLine($"Incomplete Line Score: {Day10.GetIncompleteLineScore(SampleD
 Console.WriteLine("\n --- My Day 10 --- \n");
 Console.WriteLine($"Illegal Character Score: {Day10.GetCorruptLineScore(SubmarineData.Day10Input)}");
 Console.WriteLine($"Incomplete Line Score: {Day10.GetIncompleteLineScore(SubmarineData.Day10Input)}");
+
+Console.WriteLine("\n --- Sample Day 11 --- \n");
+Console.WriteLine($"Total Flashes: {Day11.TrackFlashes(SampleData.DumboOctopuses, 100)}");
+Console.WriteLine($"Synchronized on Step: {Day11.GetSynchronizedStep(SampleData.DumboOctopuses)}");
+
+Console.WriteLine("\n --- My Day 11 --- \n");
+Console.WriteLine($"Total Flashes: {Day11.TrackFlashes(SubmarineData.DumboOctopuses, 100)}");
+Console.WriteLine($"Synchronized on Step: {Day11.GetSynchronizedStep(SubmarineData.DumboOctopuses)}");
