@@ -88,3 +88,7 @@ Console.WriteLine($"Synchronized on Step: {Day11.GetSynchronizedStep(SampleData.
 Console.WriteLine("\n --- My Day 11 --- \n");
 Console.WriteLine($"Total Flashes: {Day11.TrackFlashes(SubmarineData.DumboOctopuses, 100)}");
 Console.WriteLine($"Synchronized on Step: {Day11.GetSynchronizedStep(SubmarineData.DumboOctopuses)}");
+
+Console.WriteLine("\n --- Sample Day 12 --- \n");
+Day12.MapCaveNodes(SampleData.CaveNodes);
+Console.WriteLine($"Total Routes: ");
