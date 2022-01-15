@@ -90,5 +90,9 @@ Console.WriteLine($"Total Flashes: {Day11.TrackFlashes(SubmarineData.DumboOctopu
 Console.WriteLine($"Synchronized on Step: {Day11.GetSynchronizedStep(SubmarineData.DumboOctopuses)}");
 
 Console.WriteLine("\n --- Sample Day 12 --- \n");
-Day12.MapCaveNodes(SampleData.CaveNodes);
-Console.WriteLine($"Total Routes: ");
+Console.WriteLine($"Total Routes: {Day12.TotalPathsSingleSmallCaveVisit(SampleData.CaveNodes)}");
+Console.WriteLine($"Total Routes with one multi cave allowed: {Day12.TotalPathsOneMultipleSmallCaveVisit(SampleData.CaveNodes)}");
+
+Console.WriteLine("\n --- My Day 12 --- \n");
+Console.WriteLine($"Total Routes: {Day12.TotalPathsSingleSmallCaveVisit(SubmarineData.CaveNodes)}");
+Console.WriteLine($"Total Routes with one multi cave allowed: {Day12.TotalPathsOneMultipleSmallCaveVisit(SubmarineData.CaveNodes)}");
