@@ -1,64 +1,58 @@
-﻿namespace Day01;
+﻿using System.Text;
+
+namespace Day01;
 
 public class Day13
 {
-    public static int FoldPaper(IEnumerable<string> pointData, IEnumerable<string> foldData)
+    public static int GetPointsAfterFirstFold(IEnumerable<string> pointData, IEnumerable<string> foldData)
     {
-        var folds = foldData
-            .Select(s => s.Split("=").ToArray())
-            .Select(s => new Tuple<string, int>(s[0], int.Parse(s[1])))
-            .ToList();
+        var points = TransparentPaper.ParsePoints(pointData).ToList();
         
-        var points = pointData
-            .Select(s => s.Split(",").Select(int.Parse).ToArray())
-            .ToList();
-
-        foreach (var fold in folds)
-        {
-            var (axis, foldAt) = fold;
-
-            switch (axis.ToLowerInvariant().Last())
-            {
-                case 'x':
-                    foreach (var point in points.Where(w => w[0] > foldAt))
-                    {
-                        point[0] = foldAt - (point[0] - foldAt);
-                    }
-
-                    break;
-
-                case 'y':
-                    foreach (var point in points.Where(w => w[1] > foldAt))
-                    {
-                        point[1] = foldAt - (point[1] - foldAt);
-                    }
-
-                    break;
-
-                default:
-                    throw new Exception("Invalid fold axis.");
-            }
-        }
+        points.Fold(TransparentPaper.ParseFolds(foldData).First());
 
         return points.Distinct(new PointArrayEqualityComparer()).Count();
     }
 
-    private class PointArrayEqualityComparer : EqualityComparer<int[]>
+    public static string FoldAndPrintPoints(IEnumerable<string> pointData, IEnumerable<string> foldData)
     {
-        public override bool Equals(int[]? x, int[]? y)
+        var points = TransparentPaper.ParsePoints(pointData).ToList();
+
+        foreach (var fold in TransparentPaper.ParseFolds(foldData))
         {
-            if (x is null || y is null || x.Length != 2 || y.Length != 2)
-            {
-                return false;
-            }
-            
-            return x[0] == y[0] && x[1] == y[1];
+            points.Fold(fold);
         }
 
-        public override int GetHashCode(int[] obj)
+        var distinctPoints = points.Distinct(new PointArrayEqualityComparer());
+
+        var grid = new Grid<char>(points.Max(m => m[1]) + 1, points.Max(m => m[0]) + 1, '.');
+
+        foreach (var point in distinctPoints)
         {
-            return string.Join(",", obj).GetHashCode();
+            grid.SetItemAt(point[0], point[1], '#');
         }
+
+        // Folds will produce 8 chars.
+        var charBreakpoint = (grid.Width + 1) / 8;
+        var stringBuilder = new StringBuilder();
+
+        for (var y = 0; y < grid.Height; y++)
+        {
+            var line = "";
+
+            for (var x = 0; x < grid.Width; x++)
+            {
+                line += grid.ItemAt(x, y);
+
+                if (charBreakpoint > 0 && (x + 1) % charBreakpoint == 0)
+                {
+                    line += "   ";
+                }
+            }
+
+            stringBuilder.AppendLine(line);
+        }
+
+        return stringBuilder.ToString();
     }
 
     public static string[] Points = {
@@ -883,4 +877,59 @@ public class Day13
         "fold along y=7",
         "fold along x=5"
     };
+}
+
+internal static class TransparentPaper
+{
+    public static IEnumerable<Tuple<string, int>> ParseFolds(IEnumerable<string> folds) =>
+        folds.Select(s => s.Split("="))
+            .Select(s => new Tuple<string, int>(s[0], int.Parse(s[1])));
+
+    public static IEnumerable<int[]> ParsePoints(IEnumerable<string> points) =>
+        points.Select(s => s.Split(",").Select(int.Parse).ToArray());
+
+    public static void Fold(this IEnumerable<int[]> points, Tuple<string, int> fold)
+    {
+        var (axis, foldAt) = fold;
+
+        switch (axis.ToLowerInvariant().Last())
+        {
+            case 'x':
+                foreach (var point in points.Where(w => w[0] > foldAt))
+                {
+                    point[0] = foldAt - (point[0] - foldAt);
+                }
+
+                break;
+
+            case 'y':
+                foreach (var point in points.Where(w => w[1] > foldAt))
+                {
+                    point[1] = foldAt - (point[1] - foldAt);
+                }
+
+                break;
+
+            default:
+                throw new Exception("Invalid fold axis.");
+        }
+    }
+}
+
+internal class PointArrayEqualityComparer : EqualityComparer<int[]>
+{
+    public override bool Equals(int[]? x, int[]? y)
+    {
+        if (x is null || y is null || x.Length != 2 || y.Length != 2)
+        {
+            return false;
+        }
+            
+        return x[0] == y[0] && x[1] == y[1];
+    }
+
+    public override int GetHashCode(int[] obj)
+    {
+        return string.Join(",", obj).GetHashCode();
+    }
 }

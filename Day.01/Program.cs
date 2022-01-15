@@ -98,7 +98,9 @@ Console.WriteLine($"Total Routes: {Day12.TotalPathsSingleSmallCaveVisit(Submarin
 //Console.WriteLine($"Total Routes with one multi cave allowed: {Day12.TotalPathsOneMultipleSmallCaveVisit(SubmarineData.CaveNodes)}");
 
 Console.WriteLine("\n --- Sample Day 13 --- \n");
-Console.WriteLine($"Total points: {Day13.FoldPaper(Day13.SamplePoints, Day13.SampleFolds)}");
+Console.WriteLine($"Total points: {Day13.GetPointsAfterFirstFold(Day13.SamplePoints, Day13.SampleFolds)}");
+Console.WriteLine($"Displayed Character: \n{Day13.FoldAndPrintPoints(Day13.SamplePoints, Day13.SampleFolds)}");
 
 Console.WriteLine("\n --- My Day 13 --- \n");
-Console.WriteLine($"Total points: {Day13.FoldPaper(Day13.Points, new List<string> { Day13.Folds.First() })}");
+Console.WriteLine($"Total points: {Day13.GetPointsAfterFirstFold(Day13.Points, Day13.Folds)}");
+Console.WriteLine($"Displayed Character: \n{Day13.FoldAndPrintPoints(Day13.Points, Day13.Folds)}");
