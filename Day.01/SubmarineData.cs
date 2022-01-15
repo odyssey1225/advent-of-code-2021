@@ -8827,6 +8827,30 @@ namespace Day01
             {4,6,1,4,1,3,7,6,8,3},
             {4,7,2,4,5,6,1,1,5,6}
         };
+        internal static readonly string[] CaveNodes = {
+            "end-MY",
+            "MY-xc",
+            "ho-NF",
+            "start-ho",
+            "NF-xc",
+            "NF-yf",
+            "end-yf",
+            "xc-TP",
+            "MY-qo",
+            "yf-TP",
+            "dc-NF",
+            "dc-xc",
+            "start-dc",
+            "yf-MY",
+            "MY-ho",
+            "EM-uh",
+            "xc-yf",
+            "ho-dc",
+            "uh-NF",
+            "yf-ho",
+            "end-uh",
+            "start-NF"
+        };
     }
 
     internal static class SampleData
