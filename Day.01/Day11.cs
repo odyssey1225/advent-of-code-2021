@@ -110,6 +110,11 @@ public class Grid<T>
         Width = width;
     }
 
+    public Grid(int height, int width, T defaultValue) : this(height, width)
+    {
+        SetDefault(defaultValue);
+    }
+
     public void ForEach(Action<T> action)
     {
         for(var y = 0; y < Height; y++)
@@ -136,6 +141,17 @@ public class Grid<T>
         return true;
     }
 
+    private void SetDefault(T defaultValue)
+    {
+        for(var y = 0; y < Height; y++)
+        {
+            for (var x = 0; x < Width; x++)
+            {
+                _data[y, x] = defaultValue;
+            }
+        }
+    }
+
     public T ItemAt(int x, int y) => _data[y, x];
 
     public void SetItemAt(int x, int y, T item)
@@ -147,7 +163,7 @@ public class Grid<T>
         
         _data[y, x] = item;
     }
-
+    
     public List<T> AllItems()
     {
         var items = new List<T>();
