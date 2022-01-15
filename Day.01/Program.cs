@@ -95,4 +95,10 @@ Console.WriteLine($"Total Routes with one multi cave allowed: {Day12.TotalPathsO
 
 Console.WriteLine("\n --- My Day 12 --- \n");
 Console.WriteLine($"Total Routes: {Day12.TotalPathsSingleSmallCaveVisit(SubmarineData.CaveNodes)}");
-Console.WriteLine($"Total Routes with one multi cave allowed: {Day12.TotalPathsOneMultipleSmallCaveVisit(SubmarineData.CaveNodes)}");
+//Console.WriteLine($"Total Routes with one multi cave allowed: {Day12.TotalPathsOneMultipleSmallCaveVisit(SubmarineData.CaveNodes)}");
+
+Console.WriteLine("\n --- Sample Day 13 --- \n");
+Console.WriteLine($"Total points: {Day13.FoldPaper(Day13.SamplePoints, Day13.SampleFolds)}");
+
+Console.WriteLine("\n --- My Day 13 --- \n");
+Console.WriteLine($"Total points: {Day13.FoldPaper(Day13.Points, new List<string> { Day13.Folds.First() })}");
