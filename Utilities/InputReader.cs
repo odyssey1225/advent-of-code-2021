@@ -2,7 +2,7 @@
 
 public class InputReader
 {
-    public string[] Lines { get; }
+    public string[] AllLines { get; }
     
     public InputReader(string file)
     {
@@ -13,6 +13,6 @@ public class InputReader
             throw new FileNotFoundException($"{filePath} not found.");
         }
 
-        Lines = File.ReadAllLines(filePath);
+        AllLines = File.ReadAllLines(filePath);
     }
 }
