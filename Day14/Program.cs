@@ -5,7 +5,7 @@ using Utilities;
 // var inputReader = new InputReader("sampleInput.txt");
 var inputReader = new InputReader("input.txt");
 
-var patternMap = inputReader.Lines[2..]
+var patternMap = inputReader.AllLines[2..]
     .Select(s => s.Split("->"))
     .ToDictionary(k => k[0].Trim(), v => v[1].Trim());
 
@@ -15,7 +15,7 @@ var polymerPairs = patternMap
 
 var lastGroup = string.Empty;
 
-var initialPolymer = inputReader.Lines[0];
+var initialPolymer = inputReader.AllLines[0];
 
 for (var i = 0; i < initialPolymer.Length - 1; i++)
 {
