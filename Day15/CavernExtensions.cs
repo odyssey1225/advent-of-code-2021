@@ -2,7 +2,7 @@
 
 namespace Day15;
 
-public static class CavernHelpers
+public static class CavernExtensions
 {
     private static List<CavernNode> GetNeighbors(this Grid<CavernNode> grid, CavernNode current)
     {
@@ -41,7 +41,7 @@ public static class CavernHelpers
     public static int GetShortestPath(this Grid<CavernNode> grid)
     {
         var target = grid.ItemAt(grid.Width - 1, grid.Height - 1);
-        var explored = new List<CavernNode>();
+        var explored = new HashSet<CavernNode>();
         var frontier = new PriorityQueue<CavernNode, int>();
     
         frontier.Enqueue(grid.ItemAt(0, 0), 0);
