@@ -1,8 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using System.Collections;
-using System.Globalization;
-using System.Linq.Expressions;
+using Day16;
 using Utilities;
 
 // var inputReader = new InputReader("sampleInput.txt").AllLines;
@@ -28,82 +27,8 @@ var hexValues = new Hashtable
     { 'F', "1111" }
 };
 
-var position = 0;
+var decodedBits = string.Concat(inputReader[0].Select(s => hexValues[s]));
 
-Console.WriteLine(ReadPacket(string.Concat(inputReader[0].Select(s => hexValues[s]))));
+var packetReader = new PacketReader(decodedBits);
 
-Range VersionRange() => position..(position += 3);
-Range TypeRange() => position..(position += 3);
-Range NextBitRange() => position..(position += 1);
-Range LiteralNumberGroupRange() => position..(position += 4);
-Range SubPacketLengthRange() => position..(position += 15);
-Range NumberOfSubPacketsRange() => position..(position += 11);
-
-int ReadPacket(ReadOnlySpan<char> bits)
-{
-    var packetVersion = bits[VersionRange()].ToBitVector().Data;
-    var packetType = bits[TypeRange()].ToBitVector().Data;
-
-    switch (packetType)
-    {
-        case 4:
-            
-            DecodeLiteralNumber(bits);
-            
-            break;
-        
-        default:
-            
-            var lengthType = bits[NextBitRange()][0];
-            
-            switch (lengthType)
-            {
-                case '0':
-
-                    var subPacketLength = bits[SubPacketLengthRange()].ToBitVector().Data;
-                    
-                    var endingPosition = position + subPacketLength;
-                    
-                    while (position < endingPosition)
-                    {
-                        packetVersion += ReadPacket(bits);
-                    }
-                    
-                    break;
-                
-                default:
-                    
-                    var numberOfSubPackets = bits[NumberOfSubPacketsRange()].ToBitVector().Data;
-
-                    for (var i = 0; i < numberOfSubPackets; i++)
-                    {
-                        packetVersion += ReadPacket(bits);
-                    }
-                    
-                    break;
-            }
-            
-            break;
-    }
-
-    return packetVersion;
-}
-
-void DecodeLiteralNumber(ReadOnlySpan<char> bits)
-{
-    var numberBits = string.Empty;
-            
-    while (true)
-    {
-        var groupType = bits[NextBitRange()][0];
-                
-        numberBits += bits[LiteralNumberGroupRange()].ToString();
-                
-        if (groupType == '0')
-        {
-            break;
-        }
-    }
-    
-    var number = numberBits.ToBitVector().Data;
-}
+Console.WriteLine(packetReader.SumPacketVersions());
