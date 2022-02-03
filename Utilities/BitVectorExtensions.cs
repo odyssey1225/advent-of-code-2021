@@ -13,7 +13,7 @@ public static class BitVectorExtensions
     {
         return position == 1
             ? BitVector32.CreateMask()
-            : BitVector32.CreateMask((short)Math.Pow(2, position - 2));
+            : BitVector32.CreateMask((int)Math.Pow(2, position - 2));
     }
 
     public static BitVector32.Section GetSection(int numBits)
@@ -41,7 +41,7 @@ public static class BitVectorExtensions
 
     public static BitVector32 ToBitVector(this ReadOnlySpan<char> input)
     {
-        var bitVector = new BitVector32(0);
+        var bitVector = new BitVector32();
         
         for (var i = 0; i < input.Length; i++)
         {

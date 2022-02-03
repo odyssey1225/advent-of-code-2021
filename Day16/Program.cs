@@ -31,4 +31,4 @@ var decodedBits = string.Concat(inputReader[0].Select(s => hexValues[s]));
 
 var packetReader = new PacketReader(decodedBits);
 
-Console.WriteLine(packetReader.SumPacketVersions());
+Console.WriteLine(packetReader.DecodeTransmission());
