@@ -4,7 +4,7 @@ namespace Utilities;
 
 public static class BitVectorExtensions
 {
-    public static bool BitIsSet(BitVector32 bitVector, int position)
+    public static bool BitIsSet(this BitVector32 bitVector, int position)
     {
         return bitVector[GetMask(position)];
     }
@@ -60,7 +60,7 @@ public static class BitVectorExtensions
         this IEnumerable<BitVector32> bitVectors, int position, bool isSet)
     {
         return bitVectors
-            .Where(w => isSet ? BitIsSet(w, position) : !BitIsSet(w, position))
+            .Where(w => isSet ? w.BitIsSet(position) : !w.BitIsSet(position))
             .ToList()
             .AsReadOnly();
     }
