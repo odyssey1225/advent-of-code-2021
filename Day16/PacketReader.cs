@@ -1,4 +1,5 @@
-﻿using Utilities;
+﻿using System.Collections.Specialized;
+using Utilities;
 
 namespace Day16;
 
@@ -18,9 +19,9 @@ public ref struct PacketReader
     private Range SubPacketsLengthRange => _currentPosition..(_currentPosition += 15);
     private Range NumberOfSubPacketsRange => _currentPosition..(_currentPosition += 11);
     
-    public Tuple<int, long> DecodeTransmission()
+    public Tuple<int, ulong> DecodeTransmission()
     {
-        var number = 0L;
+        var number = 0UL;
         var packetVersion = _bits[HeaderRange].ToBitVector().Data;
         var packetType = _bits[HeaderRange].ToBitVector().Data;
     
@@ -36,7 +37,7 @@ public ref struct PacketReader
                 
                 var lengthType = _bits[NextBitRange][0];
                 
-                var subPacketValues = new List<long>();
+                var subPacketValues = new List<ulong>();
                 
                 switch (lengthType)
                 {
@@ -75,25 +76,26 @@ public ref struct PacketReader
 
                 number = packetType switch
                 {
-                    0 => subPacketValues.Sum(),
-                    1 => subPacketValues.Aggregate(1L, (total, next) => total * next),
+                    0 => subPacketValues.Aggregate(0UL, (total, next) => total + next),
+                    1 => subPacketValues.Aggregate(1UL, (total, next) => total * next),
                     2 => subPacketValues.Min(),
                     3 => subPacketValues.Max(),
-                    5 => subPacketValues.First() > subPacketValues.Last() ? 1 : 0,
-                    6 => subPacketValues.First() < subPacketValues.Last() ? 1 : 0,
-                    7 => subPacketValues.First() == subPacketValues.Last() ? 1 : 0,
+                    5 => subPacketValues.First() > subPacketValues.Last() ? 1UL : 0UL,
+                    6 => subPacketValues.First() < subPacketValues.Last() ? 1UL : 0UL,
+                    7 => subPacketValues.First() == subPacketValues.Last() ? 1UL : 0UL,
                     _ => number
                 };
 
                 break;
         }
 
-        return new Tuple<int, long>(packetVersion, number);
+        return new Tuple<int, ulong>(packetVersion, number);
     }
 
-    private long DecodeLiteralNumber()
+    private ulong DecodeLiteralNumber()
     {
         char groupType;
+        var number = 0UL;
         var numberBits = string.Empty;
 
         do
@@ -102,20 +104,14 @@ public ref struct PacketReader
             numberBits += _bits[LiteralNumberGroupRange].ToString();
         } while (groupType != '0');
 
-        // TODO -- Handle numbers with greater than 32 bits.
-        if (numberBits.Length > 32)
+        for (var i = 0; i < numberBits.Length; i++)
         {
-            if (numberBits == "110011110100110101111101011010010111")
+            if (numberBits[i] == '1')
             {
-                return 55647393431;
-            }
-
-            if (numberBits == "00110000000111001110010011101101010011100101")
-            {
-                return 3306291123429;
+                number |= 1UL << numberBits.Length - (i + 1);
             }
         }
         
-        return (uint)numberBits.ToBitVector().Data;
+        return number;
     }
 }
