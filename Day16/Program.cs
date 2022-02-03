@@ -5,8 +5,8 @@ using System.Globalization;
 using System.Linq.Expressions;
 using Utilities;
 
-var inputReader = new InputReader("sampleInput.txt").AllLines;
-// var inputReader = new InputReader("input.txt").AllLines;
+// var inputReader = new InputReader("sampleInput.txt").AllLines;
+var inputReader = new InputReader("input.txt").AllLines;
 
 var hexValues = new Hashtable
 {
@@ -28,49 +28,82 @@ var hexValues = new Hashtable
     { 'F', "1111" }
 };
 
-ReadOnlySpan<char> decodedInput = string.Concat(inputReader[0].Select(s => hexValues[s]));
-
-var blah = BitVectorExtensions.GetSection(3);
-
 var position = 0;
 
-while (position < decodedInput.Length)
+Console.WriteLine(ReadPacket(string.Concat(inputReader[0].Select(s => hexValues[s]))));
+
+Range VersionRange() => position..(position += 3);
+Range TypeRange() => position..(position += 3);
+Range NextBitRange() => position..(position += 1);
+Range LiteralNumberGroupRange() => position..(position += 4);
+Range SubPacketLengthRange() => position..(position += 15);
+Range NumberOfSubPacketsRange() => position..(position += 11);
+
+int ReadPacket(ReadOnlySpan<char> bits)
 {
-    var packetVersion = decodedInput[VersionRange()].ToBitVector()[blah];
-    var packetType = decodedInput[TypeRange()].ToBitVector()[blah];
+    var packetVersion = bits[VersionRange()].ToBitVector().Data;
+    var packetType = bits[TypeRange()].ToBitVector().Data;
 
     switch (packetType)
     {
         case 4:
-            var numberBits = string.Empty;
             
-            while (true)
-            {
-                var groupType = decodedInput[NumberGroupTypeRange()];
-                
-                numberBits += decodedInput[LiteralNumberGroupRange()].ToString();
-                
-                if (groupType[0] == '0')
-                {
-                    break;
-                }
-            }
-            
-            var number = numberBits.ToBitVector()[BitVectorExtensions.GetSection(numberBits.Length)];
+            DecodeLiteralNumber(bits);
             
             break;
         
         default:
+            
+            var lengthType = bits[NextBitRange()][0];
+            
+            switch (lengthType)
+            {
+                case '0':
+
+                    var subPacketLength = bits[SubPacketLengthRange()].ToBitVector().Data;
+                    
+                    var endingPosition = position + subPacketLength;
+                    
+                    while (position < endingPosition)
+                    {
+                        packetVersion += ReadPacket(bits);
+                    }
+                    
+                    break;
+                
+                default:
+                    
+                    var numberOfSubPackets = bits[NumberOfSubPacketsRange()].ToBitVector().Data;
+
+                    for (var i = 0; i < numberOfSubPackets; i++)
+                    {
+                        packetVersion += ReadPacket(bits);
+                    }
+                    
+                    break;
+            }
+            
             break;
     }
+
+    return packetVersion;
 }
 
-Range VersionRange() => position..(position += 3);
-Range TypeRange() => position..(position += 3);
-Range NumberGroupTypeRange() => position..(position += 1);
-Range LiteralNumberGroupRange() => position..(position += 4);
-
-void ReadPacket(int position)
+void DecodeLiteralNumber(ReadOnlySpan<char> bits)
 {
+    var numberBits = string.Empty;
+            
+    while (true)
+    {
+        var groupType = bits[NextBitRange()][0];
+                
+        numberBits += bits[LiteralNumberGroupRange()].ToString();
+                
+        if (groupType == '0')
+        {
+            break;
+        }
+    }
     
+    var number = numberBits.ToBitVector().Data;
 }
