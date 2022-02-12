@@ -1,53 +1,66 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿
+// const int minX = 20, maxX = 30;
+// const int minY = -5, maxY = -10;
 
-// const int minXPosition = 20;
-// const int maxXPosition = 30;
-// const int minYPosition = -10;
-// const int maxYPosition = -5;
+const int minX = 207, maxX = 263;
+const int minY = -63, maxY = -115;
 
-const int minXPosition = 207;
-const int maxXPosition = 263;
-const int minYPosition = -115;
-const int maxYPosition = -63;
+var maxYPosition = 0;
+var intercepts = 0;
 
-var targetX = Enumerable.Range(minXPosition, maxXPosition - minXPosition + 1).ToArray();
-var targetY = Enumerable.Range(minYPosition, maxYPosition - minYPosition + 1).ToArray();
-
-var xPosition = 0;
-var yPosition = 0;
-
-var xVelocity = MinX();
-var yVelocity = Math.Abs(minYPosition) - 1;
-
-var maxY = 0;
-
-while (!InTheTrench())
+for (var x = StartingX(); x <= maxX; x++)
 {
-    xPosition += xVelocity;
-    yPosition += yVelocity;
-
-    maxY = Math.Max(yPosition, maxY);
-
-    if (xVelocity != 0)
+    for (var y = Math.Abs(maxY) - 1; y >= maxY; y--)
     {
-        xVelocity = xVelocity > 0 ? --xVelocity : ++xVelocity;
+        if (WillHitTrench(x, y))
+        {
+            intercepts++;
+        }
     }
-
-    --yVelocity;
 }
 
-int MinX(int x = 1, int sum = 1)
+Console.WriteLine($"Highest Y position: {maxYPosition}.");
+Console.WriteLine($"Total intercepting velocities: {intercepts}");
+
+bool WillHitTrench(int x, int y)
 {
-    if (sum > targetX.Max())
+    int xV = x, xP = x;
+    int yV = y, yP = y;
+    
+    while (xP <= maxX && yP >= maxY)
     {
-        throw new Exception("X out of bounds, unable to hit trench.");
+        if (xP is >= minX and <= maxX && yP is <= minY and >= maxY)
+        {
+            return true;
+        }
+
+        if (xV != 0)
+        {
+            xV = xV > 0 ? xV - 1 : xV + 1;
+        }
+        
+        --yV;
+        
+        xP += xV;
+        yP += yV;
+        
+        if (yP > maxYPosition)
+        {
+            maxYPosition = yP;
+        }
     }
     
-    return targetX.Contains(sum) 
-        ? x 
-        : MinX(++x, sum + x);
+    return false;
 }
 
-bool InTheTrench() => targetX.Contains(xPosition) && targetY.Contains(yPosition);
+int StartingX()
+{
+    var x = 0;
 
-Console.WriteLine(maxY);
+    while (x * (x + 1) / 2 < minX)
+    {
+        ++x;
+    }
+
+    return x;
+}
